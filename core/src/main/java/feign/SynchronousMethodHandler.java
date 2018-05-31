@@ -50,7 +50,7 @@ final class SynchronousMethodHandler implements MethodHandler {
       Logger.Level logLevel, MethodMetadata metadata,
       RequestTemplate.Factory buildTemplateFromArgs, Options options,
       Decoder decoder, ErrorDecoder errorDecoder, boolean decode404,
-      boolean closeAfterDecode,List<ResponseInterceptor> responseInterceptors) {
+      boolean closeAfterDecode, List<ResponseInterceptor> responseInterceptors) {
     this.target = checkNotNull(target, "target");
     this.client = checkNotNull(client, "client for %s", target);
     this.retryer = checkNotNull(retryer, "retryer for %s", target);
@@ -96,9 +96,9 @@ final class SynchronousMethodHandler implements MethodHandler {
     long start = System.nanoTime();
     try {
       response = client.execute(request, options);
-      
-      for(ResponseInterceptor interceptor : responseInterceptors) {
-          interceptor.intercept(response);
+
+      for (ResponseInterceptor interceptor : responseInterceptors) {
+        interceptor.intercept(response);
       }
       // ensure the request is set. TODO: remove in Feign 10
       response.toBuilder().request(request).build();
@@ -211,7 +211,7 @@ final class SynchronousMethodHandler implements MethodHandler {
                                 ErrorDecoder errorDecoder) {
       return new SynchronousMethodHandler(target, client, retryer, requestInterceptors, logger,
           logLevel, md, buildTemplateFromArgs, options, decoder,
-          errorDecoder, decode404, closeAfterDecode,responseInterceptors);
+          errorDecoder, decode404, closeAfterDecode, responseInterceptors);
     }
   }
 }

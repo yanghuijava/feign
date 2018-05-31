@@ -402,12 +402,12 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
+      <!-- <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
         <version>${license-maven-plugin.version}</version>
         <configuration>
-          <!-- session.executionRootDirectory resolves properly even with nested modules -->
+          session.executionRootDirectory resolves properly even with nested modules
           <header>${main.basedir}/src/etc/header.txt</header>
           <excludes>
             <exclude>.travis.yml</exclude>
@@ -441,7 +441,7 @@
             <phase>compile</phase>
           </execution>
         </executions>
-      </plugin>
+      </plugin> -->
       <plugin>
         <groupId>com.marvinformatics.formatter</groupId>
         <artifactId>formatter-maven-plugin</artifactId>
