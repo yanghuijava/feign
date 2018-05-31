@@ -109,7 +109,7 @@ public abstract class Feign {
         new InvocationHandlerFactory.Default();
     private boolean decode404;
     private boolean closeAfterDecode = true;
-    private List<ResponseInterceptor> responseInterceptors;
+    private List<ResponseInterceptor> responseInterceptors = new ArrayList<ResponseInterceptor>();
 
     public Builder logLevel(Logger.Level logLevel) {
       this.logLevel = logLevel;
@@ -208,6 +208,11 @@ public abstract class Feign {
       for (RequestInterceptor requestInterceptor : requestInterceptors) {
         this.requestInterceptors.add(requestInterceptor);
       }
+      return this;
+    }
+
+    public Builder responseInterceptors(ResponseInterceptor responseInterceptor) {
+      this.responseInterceptors.add(responseInterceptor);
       return this;
     }
 

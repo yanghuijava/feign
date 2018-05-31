@@ -93,13 +93,18 @@ final class SynchronousMethodHandler implements MethodHandler {
     }
 
     Response response;
+    Response r = null;
     long start = System.nanoTime();
     try {
       response = client.execute(request, options);
 
+      byte[] bodyData = Util.toByteArray(response.body().asInputStream());
+      r = response.toBuilder().body(bodyData).build();
       for (ResponseInterceptor interceptor : responseInterceptors) {
-        interceptor.intercept(response);
+        bodyData = interceptor.intercept(r, metadata.returnType());
+        r = response.toBuilder().body(bodyData).build();
       }
+      response = response.toBuilder().body(bodyData).build();
       // ensure the request is set. TODO: remove in Feign 10
       response.toBuilder().request(request).build();
     } catch (IOException e) {
@@ -107,6 +112,9 @@ final class SynchronousMethodHandler implements MethodHandler {
         logger.logIOException(metadata.configKey(), logLevel, e, elapsedTime(start));
       }
       throw errorExecuting(request, e);
+    } finally {
+      if (r != null)
+        ensureClosed(r.body());
     }
     long elapsedTime = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start);
 

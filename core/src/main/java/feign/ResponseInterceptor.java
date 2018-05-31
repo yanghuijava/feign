@@ -1,7 +1,9 @@
 package feign;
 
+import java.lang.reflect.Type;
+
 public interface ResponseInterceptor {
 
-  void intercept(Response response);
+  byte[] intercept(Response response, Type type) throws Exception;
 
 }
