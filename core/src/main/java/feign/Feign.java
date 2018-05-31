@@ -109,6 +109,7 @@ public abstract class Feign {
         new InvocationHandlerFactory.Default();
     private boolean decode404;
     private boolean closeAfterDecode = true;
+    private List<ResponseInterceptor> responseInterceptors;
 
     public Builder logLevel(Logger.Level logLevel) {
       this.logLevel = logLevel;
@@ -247,7 +248,7 @@ public abstract class Feign {
     public Feign build() {
       SynchronousMethodHandler.Factory synchronousMethodHandlerFactory =
           new SynchronousMethodHandler.Factory(client, retryer, requestInterceptors, logger,
-              logLevel, decode404, closeAfterDecode);
+              logLevel, decode404, closeAfterDecode,responseInterceptors);
       ParseHandlersByName handlersByName =
           new ParseHandlersByName(contract, options, encoder, decoder, queryMapEncoder,
               errorDecoder, synchronousMethodHandlerFactory);
