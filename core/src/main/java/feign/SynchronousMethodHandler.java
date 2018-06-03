@@ -98,6 +98,9 @@ final class SynchronousMethodHandler implements MethodHandler {
     try {
       response = client.execute(request, options);
 
+      /**
+       * 扩展
+       */
       byte[] bodyData = Util.toByteArray(response.body().asInputStream());
       r = response.toBuilder().body(bodyData).build();
       for (ResponseInterceptor interceptor : responseInterceptors) {
@@ -105,6 +108,7 @@ final class SynchronousMethodHandler implements MethodHandler {
         r = response.toBuilder().body(bodyData).build();
       }
       response = response.toBuilder().body(bodyData).build();
+      /*******************************扩展结束*************************************/
       // ensure the request is set. TODO: remove in Feign 10
       response.toBuilder().request(request).build();
     } catch (IOException e) {
